@@ -1,0 +1,44 @@
+{
+  "servers": {
+    "default": {
+      "addInvoice": {},
+      "bakeMacaroon": {},
+      "channelBalance": {},
+      "closeChannel": {"responseStream": true},
+      "forwardingHistory": {},
+      "getChanInfo": {},
+      "getInfo": {},
+      "getNodeInfo": {},
+      "listChannels": {},
+      "listPeers": {},
+      "lookupInvoice": {},
+      "newAddress": {},
+      "openChannel": {"responseStream": true},
+      "pendingChannels": {},
+      "queryRoutes": {},
+      "subscribeChannelEvents": {"responseStream": true},
+      "subscribeChannelGraph": {"responseStream": true},
+      "subscribeInvoices": {"responseStream": true},
+      "walletBalance": {}
+    },
+    "invoices": {
+      "addHoldInvoice": {},
+      "cancelInvoice": {},
+      "settleInvoice": {},
+      "subscribeSingleInvoice": {"responseStream": true}
+    },
+    "router": {
+      "buildRoute": {},
+      "sendToRoute": {},
+      "subscribeHtlcEvents": {"responseStream": true},
+      "trackPaymentV2": {"responseStream": true}
+    },
+    "version": {
+      "getVersion": {}
+    },
+    "wallet": {
+      "deriveKey": {},
+      "estimateFee": {}
+    }
+  }
+}

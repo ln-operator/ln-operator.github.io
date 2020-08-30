@@ -1,0 +1,22 @@
+.bg-light.border-info.card.collapse.connect-wallet.hide.mb-2.mt-5.template
+  .card-body.text-info
+    h1.card-title.jumbotron
+      i.fa-network-wired.fas.mr-2
+      | Connect to Your Node
+    p.card-text.text-muted
+      | Enter the secret connection code given by the gateway to connect to
+      | your node.
+    .alert.alert-warning.collapse.hide.failed-connect
+      i.fa-frown.far.mr-2
+      |
+      | Failed to connect to backing node. Check the connection code?
+    .failure
+    form.authenticate
+      .form-group
+        label Connection Code
+        input.form-control.form-control-lg.credentials.form-item(
+          autocomplete="off",
+          autofocus,
+          type="password",
+        )
+      button.btn.btn-block.btn-info.btn-lg.form-item(type="submit") Connect

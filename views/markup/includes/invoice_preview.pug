@@ -1,0 +1,14 @@
+.card.collapse.bg-light.border-success.hide.invoice-details
+  .card-body.pb-0
+    p.card-text
+      textarea.form-control(
+        maxlength="1024",
+        placeholder="Description (optional)",
+      )
+  .card-body.pb-0
+    form.execute-payment
+      .form-group
+        .form-row
+          .col-12
+            button.btn.btn-block.btn-lg.btn-success.make-invoice(type="submit")
+              | Request Payment

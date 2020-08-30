@@ -1,0 +1,46 @@
+.bg-primary.card.collapse.mb-4.sent-payment.template.text-white
+  .card-body
+    h4.card-title
+      | Sent Payment
+      button.close.float-right(aria-label="Close", type="button")
+        span(aria-hidden="true") &times;
+    p.card-text.mb-0
+      span.payment-amount
+      |
+      |
+      span.currency
+      |
+      | (
+      span.fiat-equivalent $..
+      | )
+    p.card-text.mb-0.routing-fees(hidden)
+      small
+        span Routing fees:
+        |
+        |
+        span.fee-amount
+        |
+        |
+        span.currency
+        |
+        | across
+        |
+        span.hop-count
+        |
+        |
+        span hop
+        span.hop-plural(hidden) s
+        span .
+    blockquote.description.mb-0.mt-2
+      i.fa-quote-left.fas.mr-2
+      span.description-text.mr-2
+      i.fa-quote-right.fas
+  .card-footer
+    strong.card-text
+      span Total paid:
+      |
+      |
+      span.total-amount
+      |
+      |
+      span.currency

@@ -1,0 +1,1 @@
+exclude = '{$exclude,compiled-app.js,index.html,node_modules}'

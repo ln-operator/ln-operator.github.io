@@ -1,0 +1,26 @@
+.bg-success.card.collapse.hide.mb-4.received-payment.template.text-white
+  .card-body
+    h4.card-title
+      | Received Payment
+      button.close.float-right(aria-label="Close", type="button")
+        span(aria-hidden="true") &times;
+    p.amount.card-text.mb-0
+      span.tokens-amount
+      |
+      |
+      span.currency
+      |
+      | (
+      span.fiat-equivalent $..
+      | )
+    blockquote.description.mb-1.mt-3
+      i.fa-quote-left.fas.mr-2
+      span.description-text.mr-2
+      i.fa-quote-right.fas
+    .message(hidden)
+      hr
+      p.card-text.font-weight-bold Message From Sender:
+      blockquote.mb-1.mt-3
+        i.fa-quote-left.fas.mr-2
+        span.message-text.mr-2
+        i.fa-quote-right.fas

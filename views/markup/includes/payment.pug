@@ -1,0 +1,40 @@
+.border-primary.card.collapse.hide.mb-4.payment.template.text-primary
+  .card-body.pb-0
+    h4
+      span.card-title(
+        data-failed="Payment Failed",
+        data-found-route="Ready to Pay",
+        data-paying="Paying...",
+        data-probing="Checking Payability",
+      )
+        | Checking Payability...
+      button.close.float-right(aria-label="Close", type="button")
+        span(aria-hidden="true") &times;
+    p.amount.card-text.mb-0
+      span.payment-amount
+      |
+      |
+      span.payment-currency
+      |
+      |
+      | (
+      span.fiat-equivalent
+      | )
+      |
+      | to
+      |
+      span.destination-alias
+    .mb-2
+      small.destination-key.text-muted
+    blockquote.description.mb-2(hidden)
+      .quoted-description-text.mb-3(hidden)
+        i.fa-quote-left.fas.mr-2
+        span.description-text.mr-2
+        i.fa-quote-right.fas
+    .collapse.mb-3.progress.show
+      .progress-bar.progress-bar-animated.progress-bar-striped(
+        role="progressbar",
+      )
+    .alert.alert-danger.already-paid.collapse.hide
+      | This payment request has already been paid. Ask for a new invoice?
+  include payment_routes.pug

@@ -1,0 +1,30 @@
+{
+  "author": "Alex Bosworth",
+  "bugs": {
+    "url": "https://github.com/ln-operator/ln-operator.github.io/issues"
+  },
+  "dependencies": {
+    "async": "3.2.0",
+    "asyncjs-util": "1.2.3",
+    "cbor": "5.1.0",
+    "invoices": "1.1.2",
+    "lightning": "2.0.38"
+  },
+  "description": "LN node operation utility",
+  "devDependencies": {
+    "browserify": "16.5.2",
+    "pug": "3.0.0",
+    "watchify": "3.11.1"
+  },
+  "license": "MIT",
+  "name": "ln-operator",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ln-operator/ln-operator.github.io.git"
+  },
+  "scripts": {
+    "start": "pug views/markup/index.pug --pretty -w -o ./",
+    "update-dependencies": "./node_modules/watchify/bin/cmd.js views/scripts/app.js -o views/scripts/compiled-app.js --ignore-transform=babelify"
+  },
+  "version": "1.0.0"
+}

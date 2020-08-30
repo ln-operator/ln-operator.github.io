@@ -1,0 +1,6 @@
+{
+  "fiatSymbols": {
+    "btc": "USD",
+    "btctestnet": "tUSD"
+  }
+}

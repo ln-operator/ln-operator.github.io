@@ -1,0 +1,44 @@
+doctype html
+html(lang="en")
+  head
+    link(
+      crossorigin="anonymous",
+      href="https://use.fontawesome.com/releases/v5.12.1/css/all.css",
+      integrity="sha384-v8BU367qNbs/aIZIxuivaU55N5GPF89WBerHoGA4QTcbUjYiLQtKdrfXnqAcXyTv",
+      rel="stylesheet",
+    )
+    link(
+      crossorigin="anonymous",
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css",
+      integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z",
+      rel="stylesheet",
+    )
+    meta(
+      content="width=device-width, initial-scale=1, shrink-to-fit=no",
+      name="viewport",
+    )
+
+    title Operator
+
+  body
+    .container.mb-4(style="min-height: 600px; padding-bottom: 100px;")
+      block content
+
+    script(
+      crossorigin="anonymous",
+      integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj",
+      src="https://code.jquery.com/jquery-3.5.1.slim.min.js",
+    )
+    script(
+      crossorigin="anonymous",
+      integrity="sha384-LtrjvnR4Twt/qOuYxE721u19sVFLVSA4hf/rRt6PrZTmiPltdZcI7q7PXQBYTKyf",
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js",
+    )
+    script(
+      crossorigin="anonymous",
+      integrity="sha256-Pdd9BewcEhv9cjGCHEY0Hqk6Fmj6izNGrw1/mo61zRI=",
+      src="https://cdnjs.cloudflare.com/ajax/libs/async/3.1.0/async.min.js",
+    )
+    script
+      include ../scripts/vendor/kjua.min.js
+      include ../scripts/compiled-app.js

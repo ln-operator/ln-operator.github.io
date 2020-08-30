@@ -1,0 +1,27 @@
+.card.bg-light.border-primary.payment-preview(hidden)
+  .card-body.pb-0
+    h4.amount.card-title.text-primary
+      span.big-tokens
+      |
+      |
+      span.wallet-currency
+      |
+      | (
+      span.fiat-equivalent $..
+      | )
+    h6.card-subtitle.mb-2.text-muted
+      | Lightning Payment 
+    p.card-text.mt-3.payment-description
+      i.fa-quote-left.fas.mr-2
+      span.description.mr-1
+      i.fa-quote-right.fas
+  .card-body.pb-0
+    .execute-payment
+      .form-group
+        .form-row
+          .col-8
+            button.btn.btn-block.btn-lg.btn-primary.start-send
+              | Send Payment
+          .col-4
+            button.btn.btn-block.btn-lg.btn-secondary.probe
+              | Check Payability

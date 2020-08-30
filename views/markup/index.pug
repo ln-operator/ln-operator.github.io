@@ -1,0 +1,27 @@
+extends layout
+
+block content
+  .row.mt-5
+    .col-md-2
+    .col-md-8.main-column
+      include includes/connect_wallet.pug
+
+      include includes/wallet_balance.pug
+
+      include includes/wallet_actions.pug
+
+      .mb-4.transactions-break
+
+      include includes/failure_details.pug
+
+      include includes/payment.pug
+
+      include includes/received_payment.pug
+
+      include includes/requested_payment.pug
+
+      include includes/sent_payment.pug
+
+      include includes/wallet_connected.pug
+
+    .col-md-2

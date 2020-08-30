@@ -1,0 +1,30 @@
+.receive.tab-pane(role="tabpanel")
+  form.action-details.preparing-receive.text-success
+    .form-group
+      .form-row
+        .col
+          label.form-control-label
+            strong Amount:
+          .input-group.input-group-lg.mb-2.mb-sm-0
+            .input-group-prepend
+              button.btn.btn-outline-success.dropdown-toggle(
+                data-toggle="dropdown",
+                type="button",
+              )
+                i.coin-selected.fa-btc.fa-fw.fab.mr-1(hidden)
+                i.fa-dollar-sign.fa-fw.fas.fiat-selected.mr-1
+              .dropdown-menu
+                a.dropdown-item.fiat.select-fiat(href="#")
+                a.currency.dropdown-item.select-coin(href="#")
+            input.form-control.request-amount(
+              autofocus,
+              min="0.01",
+              max="10000",
+              placeholder="0.00",
+              step="0.01",
+              type="number",
+            )
+            .fiat-preview.input-group-append(hidden)
+              span.input-group-text
+                small.fiat-equivalent
+    include invoice_preview.pug

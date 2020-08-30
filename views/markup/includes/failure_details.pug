@@ -1,0 +1,13 @@
+.bg-danger.card.collapse.failure-details.hide.mb-4.template.text-white
+  .card-body
+    h4.card-title.failure-title
+      | Failure
+      button.close.float-right(aria-label="Close", type="button")
+        span(aria-hidden="true") &times;
+    p.card-text.failure-description
+      | There was an unexpected issue.
+    .alert.alert-danger
+      h4.alert-heading
+        span.failure-code
+      span.failure-message
+    textarea.failure-details.form-control(readonly)

@@ -1,0 +1,37 @@
+.bg-light.border-success.card.collapse.hide.mb-4.requested-payment.template
+  .card-body
+    h4.card-title.text-success
+      | Requested Payment
+      button.close.float-right(aria-label="Close", type="button")
+        span(aria-hidden="true") &times;
+    p.amount.card-text
+      u
+        a.payment-amount.text-dark
+          span.tokens-amount
+          |
+          |
+          span.currency
+          |
+          | (
+          span.fiat-equivalent $..
+          | )
+    blockquote.description.mb-3.mt-3
+      i.fa-quote-left.fas.mr-2
+      span.description-text.mr-2
+      i.fa-quote-right.fas
+    form
+      .form-group.mb-2
+        label.font-weight-bold.form-control-label.text-success Lightning:
+        .input-group.input-group-lg
+          input.form-control.payment-request.text-to-copy(readonly)
+          .input-group-append
+            button.btn.btn-secondary.reveal-qr(type="button")
+              i.fas.fa-qrcode
+          .input-group-append
+            button.btn.btn-secondary.copy(
+              data-copied-title="Copied!",
+              type="button",
+            )
+              i.fas.fa-copy.mr-2
+              span.button-title Copy
+    .border.collapse.hide.qr-code.text-center

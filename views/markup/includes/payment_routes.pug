@@ -1,0 +1,31 @@
+ul.collapse.list-group.list-group-flush.routes.show
+  li.border-bottom-0.list-group-item.probing-route.template(hidden)
+    h6.mt-2
+      button.btn.btn-outline-primary.btn-sm.total-routing-fee
+        i.fa-fw.fa-route.fas.mr-2
+        span.route-fee
+        |
+        |
+        span.payment-currency
+        |
+        |
+        span Fee
+    ul.collapse.hide.hops.list-group.list-group-horizontal.mb-2.overflow-auto
+      li.border-bottom-0.border-light.border-right.border-top-0.hop.list-group-item.list-group-item-primary.rounded-0.template(
+        hidden
+      )
+        .node.text-nowrap
+          i.fa-circle.fas.mr-2
+          strong.node-name
+        small.fee.text-nowrap
+          span Fee:
+          |
+          |
+          span.hop-fee
+          |
+          |
+          span.payment-currency
+    form.form-row.mt-3.route-actions(hidden)
+      .col
+        button.btn.btn-block.btn-primary.pay-with-route(type="submit")
+          | Pay Now

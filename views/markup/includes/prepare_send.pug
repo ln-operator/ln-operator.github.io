@@ -1,0 +1,14 @@
+.send.tab-pane(role="tabpanel")
+  form.action-details.preparing-send.text-primary
+    .form-group
+      label
+        i.fa-bolt.fas.mr-2
+        strong Lightning:
+      input.form-control.form-control-lg.request(
+        autocapitalize="false",
+        autocomplete="false",
+        autocorrect="false",
+        autofocus,
+        spellcheck="false",
+      )
+  include payment_preview.pug
