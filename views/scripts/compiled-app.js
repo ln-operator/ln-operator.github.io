@@ -2361,6 +2361,7 @@ const fiat = 'USD';
 const {now} = Date;
 const priceCheckIntervalMs = 1000 * 60 * 5;
 const priceKey = (from, to) => `price:${from}${to}`;
+const {stringify} = JSON;
 
 /** Subscribe to the fiat exchange price
 
@@ -2398,11 +2399,6 @@ module.exports = ({win}) => {
     }
 
     return getCurrentPrice({currency, fiat, request, win}, (err, res) => {
-      // Exit early when there is no listener for the subscription
-      if (!emitter.listenerCount(event).length) {
-        return cbk([400, 'NoListenerFoundForPriceUpdates']);
-      }
-
       // Exit early when there is no price update
       if (!res) {
         return setTimeout(cbk, priceCheckIntervalMs);
