@@ -56,14 +56,15 @@ module.exports = ({credentials, win}, cbk) => {
             return cbk([400, 'ExpectedMacaroonToAddWallet']);
           }
 
-          if (!res.port) {
-            return cbk([400, 'ExpectedPortToAddWallet']);
+          if (!res.port && !res.url) {
+            return cbk([400, 'ExpectedPortOrUrlToAddWallet']);
           }
 
           try {
             return cbk(null, {
               macaroon: bufferAsHex(res.macaroon),
-              port: res.port,
+              port: res.port || undefined,
+              url: res.url || undefined,
             });
           } catch (err) {
             return cbk([400, 'ExpectedMacaroonBytesToAddWallet', {err}]);
@@ -73,7 +74,7 @@ module.exports = ({credentials, win}, cbk) => {
 
       // Attempt a query with the credentials to verify their operation
       attempt: ['decode', ({decode}, cbk) => {
-        const url = urlForPort(decode.port);
+        const url = new URL(decode.url || urlForPort(decode.port)).href;
 
         const {lnd} = lndGateway({url, macaroon: decode.macaroon});
 

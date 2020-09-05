@@ -1,5 +1,9 @@
 # Versions
 
+## 1.0.2
+
+- Connect: allow specifying a URL in credentials
+
 ## 1.0.1
 
 - Fiat: fix subscription to fiat price feed
