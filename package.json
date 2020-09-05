@@ -26,5 +26,5 @@
     "start": "pug views/markup/index.pug --pretty -w -o ./",
     "update-dependencies": "./node_modules/watchify/bin/cmd.js views/scripts/app.js -o views/scripts/compiled-app.js --ignore-transform=babelify"
   },
-  "version": "1.0.2"
+  "version": "1.0.3"
 }

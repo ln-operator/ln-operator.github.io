@@ -1,5 +1,9 @@
 # Versions
 
+## 1.0.3
+
+- Layout: add favicon
+
 ## 1.0.2
 
 - Connect: allow specifying a URL in credentials
