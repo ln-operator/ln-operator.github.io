@@ -1,5 +1,10 @@
 # Versions
 
+## 1.0.4
+
+- Navigation: add navbar
+- Navigation: add disconnect button
+
 ## 1.0.3
 
 - Layout: add favicon

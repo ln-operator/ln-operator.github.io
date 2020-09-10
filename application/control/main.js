@@ -11,6 +11,7 @@ const {cardForWalletBalance} = require('./../cards');
 const {cardForWalletConnected} = require('./../cards');
 const getLnd = require('./get_lnd');
 const {getWalletDetails} = require('./../graph');
+const setupNavigation = require('./setup_navigation');
 const {subscribeToPrice} = require('./../fiat')
 const updateBalance = require('./update_balance');
 const {updatePrice} = require('./../fiat');
@@ -63,6 +64,13 @@ module.exports = ({win}, cbk) => {
       // Get general wallet info
       getWallet: ['getLnd', ({getLnd}, cbk) => {
         return getWalletDetails({lnd: getLnd.lnd}, cbk);
+      }],
+
+      // Setup the navbar actions
+      setupNav: ['getLnd', ({}, cbk) => {
+        setupNavigation({win});
+
+        return cbk();
       }],
 
       // Add wallet actions card

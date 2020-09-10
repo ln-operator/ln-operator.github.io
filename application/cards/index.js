@@ -1,6 +1,7 @@
 const addCard = require('./add_card');
 const addControl = require('./add_control');
 const cardForConnectWallet = require('./card_for_connect_wallet');
+const cardForDisconnectWallets = require('./card_for_disconnect_wallets');
 const cardForFailureDetails = require('./card_for_failure_details');
 const cardForReceivedPayment = require('./card_for_received_payment');
 const cardForWalletActions = require('./card_for_wallet_actions');
@@ -13,6 +14,7 @@ module.exports = {
   addCard,
   addControl,
   cardForConnectWallet,
+  cardForDisconnectWallets,
   cardForFailureDetails,
   cardForReceivedPayment,
   cardForWalletActions,

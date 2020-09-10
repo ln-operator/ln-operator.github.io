@@ -39,7 +39,9 @@ html(lang="en")
     title Operator
 
   body
-    .container.mb-4(style="min-height: 600px; padding-bottom: 100px;")
+    include includes/navbar.pug
+
+    .container.mb-4.pb-5.pt-4(style="min-height: 600px;")
       block content
 
     script(
