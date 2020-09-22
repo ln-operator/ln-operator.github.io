@@ -2,10 +2,18 @@
   .card-header
     ul.card-header-tabs.nav.nav-tabs(role="tablist")
       li.nav-item.prepare-send.top-action
-        a.nav-link.text-primary(data-toggle="tab", href="#send", role="tab")
+        a.nav-link.nav-send.text-primary(
+          data-toggle="tab",
+          href="#",
+          role="tab",
+        )
           | Send
       li.nav-item.prepare-receive.top-action
-        a.nav-link.text-success(data-toggle="tab", href="#receive", role="tab")
+        a.nav-link.nav-receive.text-success(
+          data-toggle="tab",
+          href="#",
+          role="tab",
+        )
           | Receive
   .card-body
     .tab-content

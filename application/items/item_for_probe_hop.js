@@ -1,6 +1,6 @@
 const {setNodeAlias} = require('./../graph');
 
-const cloneHop = card => card.find('.hop.template').clone();
+const cloneHop = card => card.find('.hop.template:first').clone();
 const fee = item => item.find('.fee');
 const hopFee = item => item.find('.hop-fee');
 const nodeName = item => item.find('.node-name');

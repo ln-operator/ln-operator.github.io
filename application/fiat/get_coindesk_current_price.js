@@ -8,6 +8,7 @@ const known = ['AUD', 'CAD', 'CHF', 'EUR', 'GBP', 'JPY', 'MXN', 'USD', 'ZAR'];
 const notFoundIndex = -1;
 const path = 'bpi/currentprice/';
 const remoteServiceTimeoutMs = 1000 * 30;
+const supportedCurrency = 'BTC';
 
 /** Get the number of cents for a big unit token from coindesk
 
@@ -29,7 +30,7 @@ module.exports = ({currency, date, fiat, request, win}, cbk) => {
     return asyncAuto({
       // Check arguments
       validate: cbk => {
-        if (currency !== 'BTC') {
+        if (currency !== supportedCurrency) {
           return cbk([400, 'UnsupportedCurrencyForCoindeskFiatRateLookup']);
         }
 

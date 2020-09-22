@@ -1,24 +1,21 @@
 const asyncAuto = require('async/auto');
 const asyncCargo = require('async/cargo');
+const asyncMap = require('async/map');
 const {returnResult} = require('asyncjs-util');
 const {subscribeToForwards} = require('lightning/lnd_methods');
 const {subscribeToInvoices} = require('lightning/lnd_methods');
 
-const {addCard} = require('./../cards');
-const {addControl} = require('./../cards');
-const {cardForWalletActions} = require('./../cards');
-const {cardForWalletBalance} = require('./../cards');
-const {cardForWalletConnected} = require('./../cards');
-const getLnd = require('./get_lnd');
+const getLnds = require('./get_lnds');
 const {getWalletDetails} = require('./../graph');
+const {initWallet} = require('./../cards');
 const setupNavigation = require('./setup_navigation');
 const {subscribeToPrice} = require('./../fiat')
 const updateBalance = require('./update_balance');
 const {updatePrice} = require('./../fiat');
 const {updateRequestedPayment} = require('./../cards');
-const {updateWalletBalanceCard} = require('./../cards');
 
 const {now} = Date;
+const show = element => element.prop('hidden', false);
 
 /** Start application
 
@@ -41,7 +38,7 @@ module.exports = ({win}, cbk) => {
       },
 
       // Obtain the LND access object
-      getLnd: ['validate', ({}, cbk) => getLnd({win}, cbk)],
+      getLnds: ['validate', ({}, cbk) => getLnds({win}, cbk)],
 
       // Subscribe to the price
       subscribeToPrice: ['validate', ({}, cbk) => {
@@ -52,131 +49,117 @@ module.exports = ({win}, cbk) => {
         return;
       }],
 
-      // Add wallet balance card
-      addWalletBalance: ['getLnd', ({}, cbk) => {
-        const {card} = cardForWalletBalance({win});
+      // Get wallet details
+      getWallets: ['getLnds', ({getLnds}, cbk) => {
+        return asyncMap(getLnds.wallets, (node, cbk) => {
+          return getWalletDetails({lnd: node.lnd}, (err, res) => {
+            if (!!err) {
+              return cbk(err);
+            }
 
-        addControl({card, win});
-
-        return cbk(null, {card});
-      }],
-
-      // Get general wallet info
-      getWallet: ['getLnd', ({getLnd}, cbk) => {
-        return getWalletDetails({lnd: getLnd.lnd}, cbk);
+            return cbk(null, {
+              alias: res.alias,
+              is_saved_auth: node.is_saved_auth,
+              lnd: node.lnd,
+              network: res.network,
+              public_key: res.public_key,
+              url: node.url,
+            });
+          });
+        },
+        cbk);
       }],
 
       // Setup the navbar actions
-      setupNav: ['getLnd', ({}, cbk) => {
+      setupNav: ['getLnds', ({}, cbk) => {
         setupNavigation({win});
 
         return cbk();
       }],
 
-      // Add wallet actions card
-      addWalletActions: [
-        'addWalletBalance',
-        'getLnd',
-        'getWallet',
-        ({getLnd, getWallet}, cbk) =>
-      {
-        const {card} = cardForWalletActions({
-          win,
-          lnd: getLnd.lnd,
-          network: getWallet.network,
+      // Setup the wallet control cards
+      initWallets: ['getWallets', ({getWallets}, cbk) => {
+        return asyncMap(getWallets, (node, cbk) => {
+          return initWallet({
+            win,
+            alias: node.alias,
+            is_saved_auth: node.is_saved_auth,
+            lnd: node.lnd,
+            network: node.network,
+            public_key: node.public_key,
+            url: node.url,
+          },
+          cbk);
+        },
+        cbk);
+      }],
+
+      // Display default wallet
+      displayDefaultWallet: ['initWallets', ({initWallets}, cbk) => {
+        const [defaultWallet] = initWallets;
+
+        const selectedWallet = initWallets.find(({node}) => {
+          return node.data().url === win.sessionStorage.default_wallet_url;
         });
 
-        addControl({card, win});
+        const {node} = selectedWallet || defaultWallet;
+
+        show(node);
 
         return cbk();
       }],
 
-      // Add wallet connected card
-      addWalletConnected: ['addWalletActions', 'getLnd', ({getLnd}, cbk) => {
-        // Exit early when the wallet was previously connected
-        if (!!getLnd.is_saved_auth) {
-          return cbk();
-        }
+      // Setup balance update workers
+      balanceUpdaters: ['initWallets', ({initWallets}, cbk) => {
+        return asyncMap(initWallets, (wallet, cbk) => {
+          const balanceUpdater = asyncCargo((updates, cbk) => {
+            return updateBalance({
+              win,
+              card: wallet.wallet_balance_card,
+              lnd: wallet.lnd,
+            },
+            cbk);
+          });
 
-        const {card} = cardForWalletConnected({win});
+          return balanceUpdater.push(now(), err => {
+            if (!!err) {
+              return cbk(err);
+            }
 
-        addCard({card, win});
-
-        return cbk(null, {card});
-      }],
-
-      // Balance updater
-      balanceUpdater: [
-        'addWalletBalance',
-        'getLnd',
-        ({addWalletBalance, getLnd}, cbk) =>
-      {
-        const balanceUpdater = asyncCargo((updates, cbk) => {
-          return updateBalance({
-            win,
-            card: addWalletBalance.card,
-            lnd: getLnd.lnd,
-          },
-          cbk);
-        });
-
-        balanceUpdater.push(now(), err => {
-          if (err) {
-            return cbk(err);
-          }
-
-          return cbk(null, balanceUpdater);
+            return cbk(null, {lnd: wallet.lnd, updater: balanceUpdater});
+          });
         });
       }],
 
       // Subscribe to node events
-      subscribeToForwards: [
-        'balanceUpdater',
-        'getLnd',
-        ({balanceUpdater, getLnd}, cbk) =>
-      {
-        const sub = subscribeToForwards({lnd: getLnd.lnd});
+      subscribeToForwards: ['balanceUpdaters', ({balanceUpdaters}, cbk) => {
+        return asyncMap(balanceUpdaters, ({lnd, updater}, cbk) => {
+          const sub = subscribeToForwards({lnd});
 
-        sub.on('error', err => cbk(err));
-        sub.on('forward', forward => balanceUpdater.push(now()));
+          sub.on('error', err => cbk(err));
 
-        return;
+          // When there is a new forward, push balance update job to worker
+          sub.on('forward', forward => updater.push(now()));
+
+          return;
+        },
+        cbk);
       }],
 
       // Subscribe to invoice updates
-      subscribeToInvoices: [
-        'getLnd',
-        'getWallet',
-        ({getLnd, getWallet}, cbk) =>
-      {
-        const sub = subscribeToInvoices({lnd: getLnd.lnd});
+      subscribeToInvoices: ['initWallets', ({initWallets}, cbk) => {
+        return asyncMap(initWallets, ({lnd, network, node}, cbk) => {
+          const sub = subscribeToInvoices({lnd});
 
-        sub.on('error', err => cbk(err));
-        sub.on('invoice_updated', invoice => {
-          return updateRequestedPayment({
-            invoice,
-            win,
-            network: getWallet.network,
+          sub.on('error', err => cbk(err));
+
+          sub.on('invoice_updated', invoice => {
+            return updateRequestedPayment({invoice, network, node, win});
           });
-        });
 
-        return;
-      }],
-
-      // Update the node alias of the wallet balance card
-      updateAlias: [
-        'addWalletBalance',
-        'getWallet',
-        ({addWalletBalance, getWallet}, cbk) =>
-      {
-        updateWalletBalanceCard({
-          card: addWalletBalance.card,
-          node: getWallet,
-        });
-
-        updatePrice({win});
-
-        return cbk();
+          return;
+        },
+        cbk);
       }],
     },
     returnResult({reject, resolve}, cbk));

@@ -23,6 +23,7 @@ const urlForPort = port => `http://localhost:${port}/v0/grpc/`;
   @returns via cbk or Promise
   {
     lnd: <Authenticated LND API Object>
+    url: <LN Gateway URL String>
   }
 */
 module.exports = ({credentials, win}, cbk) => {
@@ -142,7 +143,7 @@ module.exports = ({credentials, win}, cbk) => {
           macaroon: upgradeMacaroon.macaroon,
         });
 
-        return cbk(null, {lnd});
+        return cbk(null, {lnd, url: attempt.url});
       }],
     },
     returnResult({reject, resolve, of: 'lnd'}, cbk));

@@ -33,9 +33,9 @@ const totalAmount = card => card.find('.total-amount');
       public_key: <Public Key Hex String>
       timeout: <Timeout Block Height Number>
     }]
+    node: <Node Container Object>
     request: <BOLT 11 Request String>
     tokens: <Total Tokens Paid Number>
-    win: <Window Object>
   }
 
   @throws
@@ -46,13 +46,17 @@ const totalAmount = card => card.find('.total-amount');
     card: <Card Object>
   }
 */
-module.exports = ({fee, hops, request, tokens, win}) => {
+module.exports = ({fee, hops, node, request, tokens}) => {
   if (fee === undefined) {
     throw new Error('ExpectedRoutingFeeToGenerateCardForSentPayment');
   }
 
   if (!isArray(hops)) {
     throw new Error('ExpectedRoutingHopsToGenerateCardForSentPayment');
+  }
+
+  if (!node) {
+    throw new Error('ExpectedNodeContainerToGenerateCardForSentPayment');
   }
 
   if (!request) {
@@ -63,11 +67,7 @@ module.exports = ({fee, hops, request, tokens, win}) => {
     throw new Error('ExpectedTokensToGenerateCardForSentPayment');
   }
 
-  if (!win) {
-    throw new Error('ExpectedWindowToGenerateCardForSentPayment');
-  }
-
-  const card = clone({template, win});
+  const card = clone({node, template});
   const parsed = parsePaymentRequest({request});
 
   const network = networkForChain[parsed.network];

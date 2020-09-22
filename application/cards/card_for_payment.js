@@ -35,6 +35,7 @@ const probing = 'probing';
 const progress = card => card.find('.progress');
 const progressBar = card => card.find('.progress-bar');
 const quotedDescriptionText = card => card.find('.quoted-description-text');
+const removeProbes = card => card.find('.probing-route').prop('hidden', true);
 const routeActions = card => card.find('.route-actions');
 const routeFoundProgress = '90%';
 const routeHops = item => item.find('.hops');
@@ -50,6 +51,7 @@ const tokensAsBigToken = tokens => (tokens / 1e8).toFixed(8);
   {
     [is_probe]: <Payment is Probe Bool>
     lnd: <Authenticated LND API Object>
+    node: <Node Container Object>
     request: <BOLT 11 Request String>
     win: <Window Object>
   }
@@ -71,12 +73,16 @@ module.exports = args => {
     throw new Error('ExpectedRequestToGenerateCardForOutgoingPayment');
   }
 
+  if (!args.node) {
+    throw new Error('ExpectedNodeContainerToGenerateCardForOutgoingPayment');
+  }
+
   if (!args.win) {
     throw new Error('ExpectedWindowToGenerateCardForOutgoingPayment');
   }
 
   const attempts = [];
-  const card = clone({template, win: args.win});
+  const card = clone({template, node: args.node});
   const parsed = parsePaymentRequest({request: args.request});
 
   const network = networkForChain[parsed.network];
@@ -118,8 +124,8 @@ module.exports = args => {
     const err = [503, 'FailedToFindRouteToDestination'];
 
     return addCard({
-      card: cardForFailureDetails({err, win: args.win}).card,
-      win: args.win,
+      card: cardForFailureDetails({err, node: args.node}).card,
+      node: args.node,
     });
   });
 
@@ -148,20 +154,21 @@ module.exports = args => {
 
         if (!!err) {
           return addCard({
-            card: cardForFailureDetails({err, win: args.win}).card,
-            win: args.win,
+            card: cardForFailureDetails({err, node: args.node}).card,
+            node: args.node,
           });
         }
 
         const sentPayment = cardForSentPayment({
           fee: res.paid.fee,
           hops: res.paid.hops,
+          node: args.node,
           request: args.request,
           tokens: res.paid.tokens,
           win: args.win,
         });
 
-        addCard({card: sentPayment.card, win: args.win});
+        addCard({card: sentPayment.card, node: args.node});
 
         updatePrice({win: args.win});
 
@@ -190,6 +197,7 @@ module.exports = args => {
     const hops = route.hops.length;
 
     attempts.push(route);
+    removeProbes(card);
 
     progressBar(card).width(estimateProgress(attempts));
 

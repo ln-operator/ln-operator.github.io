@@ -1,15 +1,23 @@
-const add = ($, card) => $('.transactions-break').after(card);
+const add = (node, card) => node.find('.transactions-break').after(card);
 const show = card => card.collapse('show');
 
-/** Add a control to the app
+/** Add a regular card to a node container
 
   {
     card: <Card Object>
-    win: <Window Object>
+    node: <Node Container Object>
   }
 */
-module.exports = ({card, win}) => {
-  add(win.jQuery, card);
+module.exports = ({card, node}) => {
+  if (!card) {
+    throw new Error('ExpectedCardToAddToNodeContainer');
+  }
+
+  if (!node) {
+    throw new Error('ExpectedNodeContainerToAddCard');
+  }
+
+  add(node, card);
 
   show(card);
 

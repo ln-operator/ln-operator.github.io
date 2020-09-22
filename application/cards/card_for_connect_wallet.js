@@ -5,7 +5,7 @@ const template = '.card.connect-wallet';
 /** Create card for connect wallet
 
   {
-    win: <Window Object>
+    node: <Node Container Object>
   }
 
   @throws
@@ -16,12 +16,12 @@ const template = '.card.connect-wallet';
     card: <Card Object>
   }
 */
-module.exports = ({win}) => {
-  if (!win) {
-    throw new Error('ExpectedWindowToGenerateCardForConnectWallet');
+module.exports = ({node}) => {
+  if (!node) {
+    throw new Error('ExpectedNodeContainerToGenerateCardForConnectWallet');
   }
 
-  const card = clone({template, win});
+  const card = clone({node, template});
 
   return {card};
 };

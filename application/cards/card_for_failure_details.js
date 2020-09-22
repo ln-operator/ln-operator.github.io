@@ -20,8 +20,8 @@ const template = '.card.failure-details';
       <Error Code Number>
       <Error Type String>
     ]
+    node: <Node Container Object>
     [title]: <Error Title String>
-    win: <Window Object>
   }
 
   @returns
@@ -29,12 +29,12 @@ const template = '.card.failure-details';
     card: <Card DOM Object>
   }
 */
-module.exports = ({description, err, title, win}) => {
-  if (!win) {
-    throw new Error('ExpectedWindowToGenerateCardForFailure');
+module.exports = ({description, err, node, title}) => {
+  if (!node) {
+    throw new Error('ExpectedNodeContainerToGenerateCardForFailure');
   }
 
-  const card = clone({template, win});
+  const card = clone({node, template});
 
   const failure = failureDetails(card);
 

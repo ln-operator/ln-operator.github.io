@@ -33,6 +33,7 @@ const tokensAsBigUnit = tokens => (tokens / 1e8).toFixed(8);
       tokens: <Tokens Number>
     }
     network: <Network Name String>
+    node: <Node Container Object>
     win: <Window Object>
   }
 
@@ -44,12 +45,16 @@ const tokensAsBigUnit = tokens => (tokens / 1e8).toFixed(8);
     card: <Card Object>
   }
 */
-module.exports = ({invoice, network, win}) => {
+module.exports = ({invoice, network, node, win}) => {
+  if (!node) {
+    throw new Error('ExpectedNodeContainerForRequestedPayment');
+  }
+
   if (!win) {
     throw new Error('ExpectedWindowToGenerateCardForRequestedPayment');
   }
 
-  const card = clone({template, win});
+  const card = clone({node, template});
   const text = linkForRequest(invoice.request).toUpperCase();
 
   closeEvent(card);

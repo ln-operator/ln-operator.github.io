@@ -4,26 +4,34 @@ block content
   .row.mt-5
     .col-md-2
     .col-md-8.main-column
-      include includes/connect_wallet.pug
+      #node-absent
+        .mb-4.transactions-break
 
-      include includes/disconnect_wallets.pug
+        include includes/connect_wallet.pug
 
-      include includes/wallet_balance.pug
+        include includes/connected_wallets.pug
 
-      include includes/wallet_actions.pug
+        include includes/disconnect_wallets.pug
 
-      .mb-4.transactions-break
+        include includes/failure_details.pug
 
-      include includes/failure_details.pug
+      .node-container.template(hidden)
+        include includes/wallet_balance.pug
 
-      include includes/payment.pug
+        include includes/wallet_actions.pug
 
-      include includes/received_payment.pug
+        .mb-4.transactions-break
 
-      include includes/requested_payment.pug
+        include includes/failure_details.pug
 
-      include includes/sent_payment.pug
+        include includes/payment.pug
 
-      include includes/wallet_connected.pug
+        include includes/received_payment.pug
+
+        include includes/requested_payment.pug
+
+        include includes/sent_payment.pug
+
+        include includes/wallet_connected.pug
 
     .col-md-2

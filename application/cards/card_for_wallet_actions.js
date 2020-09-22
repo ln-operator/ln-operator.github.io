@@ -28,8 +28,6 @@ const sendLink = card => card.find('.prepare-send .nav-link');
 const sendTab = card => card.find('.send.tab-pane');
 const setCurrency = (card, currency) => card.find('.currency').text(currency);
 const setFiat = (card, fiat) => card.find('.fiat.select-fiat').text(fiat);
-const setReceiveId = n => n.find('.receive.tab-pane').prop('id', 'receive');
-const setSendId = card => card.find('.send.tab-pane').prop('id', 'send');
 const shownReceiveTab = (link, n) => link.on('shown.bs.tab', () => n.focus());
 const shownSendTab = (link, n) => link.on('shown.bs.tab', () => n.focus());
 const template = '.card.wallet-actions';
@@ -39,6 +37,7 @@ const template = '.card.wallet-actions';
   {
     lnd: <Authenticated LND API Object>
     network: <Wallet Network Name String>
+    node: <Node Container Object>
     win: <Window Object>
   }
 
@@ -50,7 +49,7 @@ const template = '.card.wallet-actions';
     card: <Card Object>
   }
 */
-module.exports = ({lnd, network, win}) => {
+module.exports = ({lnd, network, node, win}) => {
   if (!lnd) {
     throw new Error('ExpectedAuthenticatedLndForWalletActionsCard');
   }
@@ -59,11 +58,15 @@ module.exports = ({lnd, network, win}) => {
     throw new Error('ExpectedNetworkNameForWalletActionsCard');
   }
 
+  if (!node) {
+    throw new Error('ExpectedNodeContainerForWalletActionsCard');
+  }
+
   if (!win) {
     throw new Error('ExpectedWindowToGenerateCardForWalletActions');
   }
 
-  const card = clone({template, win});
+  const card = clone({node, template});
 
   switch (win.sessionStorage.selected_payment_action) {
   case actionReceive:
@@ -101,8 +104,8 @@ module.exports = ({lnd, network, win}) => {
     }
 
     return addCard({
-      win,
-      card: cardForPayment({lnd, win, request, is_probe: true}).card,
+      node,
+      card: cardForPayment({lnd, node, request, win, is_probe: true}).card,
     });
   });
 
@@ -121,12 +124,6 @@ module.exports = ({lnd, network, win}) => {
   // Set the fiat option for a payment request
   setFiat(card, fiatSymbols[network]);
 
-  // Add an id to the receive pane, as is needed for the tab navigator
-  setReceiveId(card);
-
-  // Add an id to the send pane, as is needed for the tab navigator
-  setSendId(card);
-
   // Handle receive tab shown
   shownReceiveTab(receiveLink(card), receiveAmount(card));
 
@@ -136,25 +133,25 @@ module.exports = ({lnd, network, win}) => {
   // Handle submission of the send payment form
   submitSendPayment({card}, (err, res) => {
     if (!!err) {
-      return addCard({win, card: cardForFailureDetails({err, win}).card});
+      return addCard({node, card: cardForFailureDetails({err, node}).card});
     }
 
     if (!res.request) {
       return;
     }
 
-    const {card} = cardForPayment({lnd, win, request: res.request});
+    const {card} = cardForPayment({lnd, node, win, request: res.request});
 
-    return addCard({card, win});
+    return addCard({card, node});
   });
 
   // Handle submission of request payment form
   submitRequestPayment({card, lnd, win}, (err, invoice) => {
     if (!!err) {
-      return addCard({win, card: cardForFailureDetails({err, win}).card});
+      return addCard({node, card: cardForFailureDetails({err, node}).card});
     }
 
-    return updateRequestedPayment({invoice, network, win});
+    return updateRequestedPayment({invoice, network, node, win});
   });
 
   return {card};

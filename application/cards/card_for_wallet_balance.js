@@ -5,7 +5,7 @@ const template = '.card.wallet-balance';
 /** Create card for wallet balance
 
   {
-    win: <Window Object>
+    node: <Node Containerr Object>
   }
 
   @throws
@@ -16,12 +16,12 @@ const template = '.card.wallet-balance';
     card: <Card Object>
   }
 */
-module.exports = ({win}) => {
-  if (!win) {
-    throw new Error('ExpectedWindowToGenerateCardForWalletBalance');
+module.exports = ({node}) => {
+  if (!node) {
+    throw new Error('ExpectedNodeContainerToGenerateCardForWalletBalance');
   }
 
-  const card = clone({template, win});
+  const card = clone({node, template});
 
   return {card};
 };

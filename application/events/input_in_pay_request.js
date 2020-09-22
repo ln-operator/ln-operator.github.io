@@ -10,6 +10,7 @@ const expirationTime = card => card.find('.expiration');
 const fiatEquivalent = card => card.find('.fiat-equivalent');
 const handleInput = (element, handler) => element.on('input', handler);
 const hide = element => element.prop('hidden', true);
+const hideSend = card => card.find('.send').removeClass('active');
 const isNumber = n => !isNaN(n);
 const paymentDescription = card => card.find('.payment-description');
 const paymentDestination = card => card.find('.destination');
@@ -19,6 +20,7 @@ const requestAmount = card => card.find('.request-amount');
 const requestInput = card => card.find('.request');
 const setHidden = (element, hidden) => element.prop('hidden', hidden);
 const setText = (element, text) => element.text(text);
+const showReceive = card => card.find('.receive').addClass('active');
 const showTab = link => link.tab('show');
 const tokensAsBigTokens = n => (n / 1e8).toFixed(8);
 const triggerInput = element => element.trigger('input');
@@ -52,6 +54,8 @@ module.exports = ({card, network, win}) => {
 
     // Exit early when the request is a number
     if (!!request && isNumber(request)) {
+      showReceive(card);
+      hideSend(card);
       hide(paymentPreview(card));
       requestAmount(card).val(request);
       requestInput(card).val(String());

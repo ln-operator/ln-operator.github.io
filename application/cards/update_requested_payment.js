@@ -18,16 +18,21 @@ const invoices = {};
       [tokens]: <Tokens Number>
     }
     network: <Network Name String>
+    node: <Node Container Object>
     win: <Window Object>
   }
 */
-module.exports = ({invoice, network, win}) => {
+module.exports = ({invoice, network, node, win}) => {
   if (!invoice) {
     throw new Error('ExpectedInvoiceToUpdateRequestedPayment');
   }
 
   if (!network) {
     throw new Error('ExpectedNetworkToUpdateRequestedPayment');
+  }
+
+  if (!node) {
+    throw new Error('ExpectedNodeContainerToUpdateRequestedPayment');
   }
 
   if (!win) {
@@ -45,16 +50,16 @@ module.exports = ({invoice, network, win}) => {
   if (isNewInvoice) {
     invoices[invoice.id].is_confirmed = false;
 
-    const {card} = cardForRequestedPayment({invoice, network, win});
+    const {card} = cardForRequestedPayment({invoice, network, node, win});
 
     invoices[invoice.id].card = card;
 
-    addCard({card, win});
+    addCard({card, node});
   }
 
   // Add a received payment card when this invoice is a new received payment
   if (isReceivedPayment && (!existing || existing.is_confirmed !== true)) {
-    const {card} = cardForReceivedPayment({invoice, network, win});
+    const {card} = cardForReceivedPayment({invoice, network, node, win});
 
     if (!!existing && !!existing.card) {
       existing.card.remove();
@@ -62,7 +67,7 @@ module.exports = ({invoice, network, win}) => {
 
     invoices[invoice.id].is_confirmed = true;
 
-    addCard({card, win});
+    addCard({card, node});
   }
 
   return;

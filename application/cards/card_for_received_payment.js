@@ -21,9 +21,17 @@ const tokensAsBigUnit = tokens => (tokens / 1e8).toFixed(8);
 
   {
     invoice: {
+      payments: [{
+        messages: [{
+          type: <Type String>
+          value: <Message Value Hex String>
+        }]
+      }]
+      [request]: <BOLT 11 Payment Request String>
+      tokens: <Invoice Tokens Number>
     }
     network: <Network Name String>
-    win: <Window Object>
+    node: <Node Container Object>
   }
 
   @throws
@@ -34,7 +42,7 @@ const tokensAsBigUnit = tokens => (tokens / 1e8).toFixed(8);
     card: <Card Object>
   }
 */
-module.exports = ({invoice, network, win}) => {
+module.exports = ({invoice, network, node}) => {
   if (!invoice) {
     throw new Error('ExpectedInvoiceToGenerateCardForReceivedPayment');
   }
@@ -43,11 +51,11 @@ module.exports = ({invoice, network, win}) => {
     throw new Error('ExpectedNetworkToGenerateCardForReceivedPayment');
   }
 
-  if (!win) {
-    throw new Error('ExpectedWindowToGenerateCardForReceivedPayment');
+  if (!node) {
+    throw new Error('ExpectedNodeContainerToGenerateCardForReceivedPayment');
   }
 
-  const card = clone({template, win});
+  const card = clone({node, template});
 
   closeEvent(card);
   currency(card).text(currencySymbols[network]);

@@ -59,7 +59,10 @@ module.exports = ({card, win}, cbk) => {
       } else {
         hideCard(card);
 
-        return cbk(null, {lnd: res.lnd});
+        return cbk(null, {
+          wallets: [{lnd: res.lnd, url: res.url}],
+          url: res.url,
+        });
       }
     });
   };

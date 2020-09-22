@@ -1,4 +1,5 @@
 const clickConfirmDisconnect = require('./click_confirm_disconnect');
+const clickConnectedWallets = require('./click_connected_wallets');
 const clickDisconnectWallets = require('./click_disconnect_wallets');
 const clickPayWithRoute = require('./click_pay_with_route');
 const clickReceiveTab = require('./click_receive_tab');
@@ -17,6 +18,7 @@ const submitSendPayment = require('./submit_send_payment');
 
 module.exports = {
   clickConfirmDisconnect,
+  clickConnectedWallets,
   clickDisconnectWallets,
   clickPayWithRoute,
   clickReceiveTab,

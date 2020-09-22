@@ -29,6 +29,9 @@ module.exports = ({card}) => {
 
     event.preventDefault();
 
+    card.find('.receive').removeClass('active');
+    card.find('.send').addClass('active');
+
     input.val(request);
 
     triggerInput(input);

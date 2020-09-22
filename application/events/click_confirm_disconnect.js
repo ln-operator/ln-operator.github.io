@@ -11,6 +11,6 @@ module.exports = ({win}) => {
   return () => {
     win.sessionStorage.clear();
 
-    return win.location.reload(false); 
+    return win.location.reload(false);
   };
 };

@@ -4,9 +4,10 @@ const {addCard} = require('./../cards');
 const {cardForFailureDetails} = require('./../cards');
 const main = require('./main');
 
+const absentNode = $ => $('#node-absent');
 const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
-const hideCards = $ => $('.card').collapse('hide');
-const hideConnect = $ => $('.connect-wallet').collapse('hide');
+const hideConnect = node => node.find('.card.connect-wallet').collapse('hide');
+const hideNodes = node => node.find('.node-container').prop('hidden', true);
 const restartTimeoutMs = 1000 * 30;
 
 /** Start application
@@ -16,17 +17,17 @@ const restartTimeoutMs = 1000 * 30;
   }
 */
 module.exports = async ({win}) => {
+  const node = absentNode(win.jQuery);
+
   return await asyncForever(async () => {
-    hideConnect(win.jQuery);
+    hideConnect(node);
 
     try {
       return await main({win});
     } catch (err) {
-      hideCards(win.jQuery);
+      hideNodes(node);
 
-      const {card} = cardForFailureDetails({err, win});
-
-      addCard({card, win});
+      addCard({node, card: cardForFailureDetails({err, node}).card});
 
       return await delay(restartTimeoutMs);
     }

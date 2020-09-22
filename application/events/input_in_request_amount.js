@@ -20,8 +20,17 @@ const tokensPerBigToken = 1e8;
   }
 
   @returns
+  <Input Event Function>
 */
 module.exports = ({card, win}) => {
+  if (!card) {
+    throw new Error('ExpectedCardToGenerateInputInRequestAmountEventHandler');
+  }
+
+  if (!win) {
+    throw new Error('ExpectedWinToGenerateInputInRequestAmountEventHandler');
+  }
+
   const amount = requestAmount(card);
 
   return handleInput(amount, event => {

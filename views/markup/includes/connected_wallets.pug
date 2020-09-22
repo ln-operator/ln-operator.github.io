@@ -1,0 +1,34 @@
+.bg-light.card.collapse.connected-wallets.hide.mb-2.template
+  .card-body
+    h4.card-title.text-info
+      | Connected
+    .list-group.mb-2.wallets
+    a.connected-wallet.list-group-item.list-group-item-action.template(
+      hidden,
+      href="#",
+    )
+      strong.alias ...
+      .text-muted
+        small.public-key ...
+    .alert.alert-warning.collapse.hide.failed-connect.mt-3
+      i.fa-frown.far.mr-2
+      |
+      | Failed to connect to backing node. Check the connection code?
+    .failure
+    .add-node.collapse.hide.list-group
+      .list-group-item
+        form.authenticate
+          .form-group
+            label.text-info
+              strong Add Node:
+            .input-group.mb-3
+              input.credentials.form-control.form-control-lg.form-item(
+                autocomplete="off",
+                placeholder="Connection Code...",
+                type="password",
+              )
+              .input-group-append
+                button.btn.btn-outline-secondary(type="submit") Connect
+    button.btn.btn-block.btn-info.collapse.connect-wallet.show
+      i.fa-network-wired.fas.mr-2
+      | Connect Another Node
